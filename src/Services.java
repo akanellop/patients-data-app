@@ -3,7 +3,6 @@ import models.Patient;
 import models.PatientsToMorbidityGroups;
 import models.Symptom;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -12,12 +11,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Service {
-    private data dataStorage;
+public class Services {
+    private Data dataStorage;
 
-    public Service(data dataStorage){
+    public Services(Data dataStorage){
         this.dataStorage= dataStorage;
-    }
+    } //constructor
+
     public boolean createMorbidityGroup(String morbidityName){
         return dataStorage.insertMorbidityGroupsTb(new MorbidityGroup(morbidityName));
     }
@@ -39,12 +39,6 @@ public class Service {
             return dataStorage.insertSymptomsTb(new Symptom(name,date,value,patient));
         }
         return false;
-
-    }
-
-    public boolean registerPatientToMorbidityGroup(Long patient, Long Morbidity){
-        return dataStorage.insertPatientsToMorbitidyGroupsTb(new PatientsToMorbidityGroups(patient,Morbidity));
-
     }
 
 
@@ -74,15 +68,6 @@ public class Service {
     public List<Patient> fetchPatientsByMorbidityGroups(String[] morbidities){
         List<Long> filteredMorbIds = dataStorage.findMorbidityIdsByNames(Arrays.asList(morbidities)); //List of ids of given names
 
-       /* List<Long> filteredPatientIds = dataStorage.getPatientsToMorbitidyGroupsTb().stream()
-                .filter(rel->{
-                    filteredMorbIds.contains(rel.getForeignKeyMorbidityGr())
-                })
-                .map(x->x.getForeignKeyPatient()).collect(Collectors.toList());
-
-        List<Patient> filteredPatients = dataStorage.getPatientsTb().stream()
-                .filter(patient -> filteredPatientIds.contains(patient.getId()))
-                .collect(Collectors.toList());*/
         List<Patient> filteredPatients = dataStorage.getPatientsTb().stream()
                 .filter(patient->{
                     List<Long> groups = dataStorage.findRelByPatientId(patient.getId()).stream().map(x->x.getForeignKeyMorbidityGr()).collect(Collectors.toList());
@@ -98,18 +83,5 @@ public class Service {
         return filteredPatients;
     }
 
-    public List<Patient> findNames(String[] morbidities){
-        List<Long> filteredMorbIds = dataStorage.findMorbidityIdsByNames(Arrays.asList(morbidities));
-
-        List<Long> filteredPatientIds = dataStorage.getPatientsToMorbitidyGroupsTb().stream()
-                .filter(rel-> filteredMorbIds.contains(rel.getForeignKeyMorbidityGr()))
-                .map(x->x.getForeignKeyPatient()).collect(Collectors.toList());
-
-        List<Patient> filteredPatients = dataStorage.getPatientsTb().stream()
-                .filter(patient -> filteredPatientIds.contains(patient.getId()))
-                .collect(Collectors.toList());
-
-        return filteredPatients;
-    }
 
 }

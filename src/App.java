@@ -1,14 +1,11 @@
-import jdk.swing.interop.SwingInterOpUtils;
 import models.Patient;
-import models.PatientsToMorbidityGroups;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class App {
 
-    private static void initializer(data myDataStorage, Service myService){
+    private static void initializer(Data myDataStorage, Services myService){
         myService.createMorbidityGroup("Respiratory");
         myService.createMorbidityGroup("Cardiovascular");
         myService.createMorbidityGroup("Diabetes");
@@ -39,15 +36,17 @@ public class App {
 
     }
 
+
+
     public static void main(String[] args){
-        data myDataStorage = new data();
-        Service myService = new Service(myDataStorage);
+        Data myDataStorage = new Data();
+        Services myService = new Services(myDataStorage);
 
         initializer(myDataStorage,myService);
 
 
         System.out.println("\n\n------------------------");
-        System.out.println("Searching for symptoms for patients over 65 with in  Cardiovascular and Respiratory morbidity groups.");
+        System.out.println("Example: Searching for symptoms for patients over 65 with in  Cardiovascular and Respiratory morbidity groups.");
 
         List<Patient> selectedPatients = myService.fetchPatientsByMorbidityGroups(new String[]{"Cardiovascular","Respiratory"});
         selectedPatients.retainAll(myService.fetchPatientsOlderThan(65));

@@ -3,21 +3,19 @@ import models.Patient;
 import models.PatientsToMorbidityGroups;
 import models.Symptom;
 
-import java.lang.reflect.Array;
-import java.time.Period;
-import java.time.ZoneId;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class data {
+public class Data {
     private List<Patient> PatientsTb;
     private List<MorbidityGroup> MorbidityGroupsTb;
     private List<PatientsToMorbidityGroups> PatientsToMorbitidyGroupsTb; //TWO FOREIGN KEYS CONSTITUTING ITS PRIMARY
     private List<Symptom> SymptomsTb; //WITH EXTRA FOREIGN KEY REFERRING TO PATIENT
 
-    public data(){
+    public Data(){
         PatientsTb = new ArrayList<>();
         MorbidityGroupsTb = new ArrayList<>();
         PatientsToMorbitidyGroupsTb = new ArrayList<>();
@@ -47,7 +45,7 @@ public class data {
 
     public boolean insertMorbidityGroupsTb(MorbidityGroup MG) {
         for( MorbidityGroup MGinTb : this.MorbidityGroupsTb) {
-            if(MGinTb.getName().equals(MG.getName())) {
+            if(MGinTb.getName().equals(MG.getName())) { //check for unique name attribute
                 MorbidityGroup.decreaseTotalIds();
                 return false;
             }
@@ -61,7 +59,7 @@ public class data {
 
     public boolean insertSymptomsTb(Symptom symptom) {
         for( Symptom symInTb : this.SymptomsTb) {
-            if(symInTb.getName().equals(symptom.getName())) {
+            if(symInTb.getName().equals(symptom.getName())) { //check for unique name attribute
                 Symptom.decreaseTotalIds();
                 return false;
             }
@@ -75,6 +73,7 @@ public class data {
         }
         return null;
     }
+
     public MorbidityGroup findMorbGrById(Long id) {
         for( MorbidityGroup morbidity : this.MorbidityGroupsTb) {
             if(morbidity.getId().equals(id)) { return morbidity;}
