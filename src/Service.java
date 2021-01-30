@@ -72,14 +72,27 @@ public class Service {
     }
 
     public List<Patient> fetchPatientsByMorbidityGroups(String[] morbidities){
-        List<Long> filteredMorbIds = dataStorage.findMorbidityIdsByNames(Arrays.asList(morbidities));
+        List<Long> filteredMorbIds = dataStorage.findMorbidityIdsByNames(Arrays.asList(morbidities)); //List of ids of given names
 
-        List<Long> filteredPatientIds = dataStorage.getPatientsToMorbitidyGroupsTb().stream()
-                .filter(rel-> filteredMorbIds.contains(rel.getForeignKeyMorbidityGr()))
+       /* List<Long> filteredPatientIds = dataStorage.getPatientsToMorbitidyGroupsTb().stream()
+                .filter(rel->{
+                    filteredMorbIds.contains(rel.getForeignKeyMorbidityGr())
+                })
                 .map(x->x.getForeignKeyPatient()).collect(Collectors.toList());
 
         List<Patient> filteredPatients = dataStorage.getPatientsTb().stream()
                 .filter(patient -> filteredPatientIds.contains(patient.getId()))
+                .collect(Collectors.toList());*/
+        List<Patient> filteredPatients = dataStorage.getPatientsTb().stream()
+                .filter(patient->{
+                    List<Long> groups = dataStorage.findRelByPatientId(patient.getId()).stream().map(x->x.getForeignKeyMorbidityGr()).collect(Collectors.toList());
+                    if(groups.containsAll(filteredMorbIds)){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                })
                 .collect(Collectors.toList());
 
         return filteredPatients;

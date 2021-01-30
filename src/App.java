@@ -47,31 +47,13 @@ public class App {
 
 
         System.out.println("\n\n------------------------");
-        System.out.println("Searching for symptoms for patients over 65 with in  Cardiovascular and Respiratory morbidity groups------------------------");
+        System.out.println("Searching for symptoms for patients over 65 with in  Cardiovascular and Respiratory morbidity groups.");
 
         List<Patient> selectedPatients = myService.fetchPatientsByMorbidityGroups(new String[]{"Cardiovascular","Respiratory"});
-        System.out.println(selectedPatients);
         selectedPatients.retainAll(myService.fetchPatientsOlderThan(65));
-        System.out.println(selectedPatients);
         selectedPatients.forEach(patient -> myService.fetchSymptomsByPatientId(patient.getId()).forEach(symptom -> symptom.print()));
 
 
-        myService.fetchPatientsByMorbidityGroups(new String[]{"Respiratory","Cardiovascular","Diabetes"}).forEach(x-> x.print());
-        /*
-        List<Long> ids =  myService.fetchPatientsOlderThan(65).stream().map(p->p.getId()).collect(Collectors.toList());
-        ids.forEach(id-> {
-            System.out.println("--------------------------------- ");
-            List<PatientsToMorbidityGroups>relationships = myDataStorage.findRelByPatientId(id);
-            if(relationships.size()>=2){
-                System.out.println("Symptoms of patient over 65 who registers in multiple morbidity groups :");
-                myService.fetchSymptomsByPatientId(id).forEach(symptom->symptom.print());
-            }
-        });
-
-        //example user of fetchPatientsUsingMorbidityGroupNames
-        System.out.println("\n\n------------------------");
-        System.out.println("example use of fetchPatientsUsingMorbidityGroupNames for group \"Cardiovascular\", should print 2 patients");
-        myService.fetchPatientsByMorbidityGroups(new String[]{"Cardiovascular"}).forEach(x-> x.print());*/
 
     }
 }
