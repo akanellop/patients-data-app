@@ -10,12 +10,13 @@ import java.util.stream.Collectors;
 
 
 public class Data {
-    private List<Patient> PatientsTb;
-    private List<MorbidityGroup> MorbidityGroupsTb;
-    private List<PatientsToMorbidityGroups> PatientsToMorbitidyGroupsTb; //TWO FOREIGN KEYS CONSTITUTING ITS PRIMARY
-    private List<Symptom> SymptomsTb; //WITH EXTRA FOREIGN KEY REFERRING TO PATIENT
+    private List<Patient> PatientsTb; //table for keeping patients
+    private List<MorbidityGroup> MorbidityGroupsTb; //table for keeping morbidity groups
+    private List<PatientsToMorbidityGroups> PatientsToMorbitidyGroupsTb; //TWO FOREIGN KEYS CONSTITUTING ITS PRIMARY,
+                                                                        // table for keeping many to many relationships between patients and morbitidy groups
+    private List<Symptom> SymptomsTb; //WITH EXTRA FOREIGN KEY REFERRING TO PATIENT, table for keeping symptoms and one to many relationship between patients and symptoms
 
-    public Data(){
+    public Data(){ //initialize tables via the constructor
         PatientsTb = new ArrayList<>();
         MorbidityGroupsTb = new ArrayList<>();
         PatientsToMorbitidyGroupsTb = new ArrayList<>();
