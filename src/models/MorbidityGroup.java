@@ -3,7 +3,7 @@ package models;
 
 public class MorbidityGroup {
     private static Long totalIds;
-    private static Long id;
+    private Long id;
     private String name;
 
 
@@ -22,5 +22,11 @@ public class MorbidityGroup {
         return this.name;
     }
 
+    public static void decreaseTotalIds(){
+        totalIds -= 1;
+    }
 
+    public void print(){
+        System.out.println("Morbidity Group "+ this.getId().toString()+" : "+ this.getName() );
+    }
 }

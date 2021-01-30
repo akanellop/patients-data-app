@@ -8,4 +8,16 @@ public class PatientsToMorbidityGroups {
         this.foreignKeyPatient = foreignKeyPatient;
         this.foreignKeyMorbidityGr = foreignKeyMorbidityGr;
     }
+
+    public void print(){
+        System.out.println("PatientKEY "+ this.getForeignKeyPatient().toString()+" and MorbidityKEY "+ this.getForeignKeyMorbidityGr().toString() );
+    }
+
+    public Long getForeignKeyPatient() {
+        return foreignKeyPatient;
+    }
+
+    public Long getForeignKeyMorbidityGr() {
+        return foreignKeyMorbidityGr;
+    }
 }

@@ -28,5 +28,17 @@ public class Symptom {
         return this.name;
     }
 
+    public Long getForeignKeyPatient() {
+        return this.foreignKeyPatient;
+    }
+
+    public static void decreaseTotalIds(){
+        totalIds -= 1;
+    }
+
+    public void print(){
+        System.out.println("Symptom instance "+ this.getId().toString()+" : "+ this.getName() +" , of patient "+this.getForeignKeyPatient().toString());
+    }
+
 
 }

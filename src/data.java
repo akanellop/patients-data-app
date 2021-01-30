@@ -4,8 +4,11 @@ import models.PatientsToMorbidityGroups;
 import models.Symptom;
 
 import java.lang.reflect.Array;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class data {
@@ -20,6 +23,7 @@ public class data {
         PatientsToMorbitidyGroupsTb = new ArrayList<>();
         SymptomsTb = new ArrayList<>();
     }
+
 
     public List<Patient> getPatientsTb() {
         return PatientsTb;
@@ -43,7 +47,10 @@ public class data {
 
     public boolean insertMorbidityGroupsTb(MorbidityGroup MG) {
         for( MorbidityGroup MGinTb : this.MorbidityGroupsTb) {
-            if(MGinTb.getName().equals(MG.getName())) { return false;}
+            if(MGinTb.getName().equals(MG.getName())) {
+                MorbidityGroup.decreaseTotalIds();
+                return false;
+            }
         }
         return this.MorbidityGroupsTb.add(MG);
     }
@@ -54,7 +61,10 @@ public class data {
 
     public boolean insertSymptomsTb(Symptom symptom) {
         for( Symptom symInTb : this.SymptomsTb) {
-            if(symInTb.getName().equals(symptom.getName())) { return false;}
+            if(symInTb.getName().equals(symptom.getName())) {
+                Symptom.decreaseTotalIds();
+                return false;
+            }
         }
         return this.SymptomsTb.add(symptom);
     }
@@ -65,6 +75,31 @@ public class data {
         }
         return null;
     }
+    public MorbidityGroup findMorbGrById(Long id) {
+        for( MorbidityGroup morbidity : this.MorbidityGroupsTb) {
+            if(morbidity.getId().equals(id)) { return morbidity;}
+        }
+        return null;
+    }
+    public List<PatientsToMorbidityGroups> findRelByPatientId(Long id) {
+        List<PatientsToMorbidityGroups> filtered = new ArrayList<>();
+        for( PatientsToMorbidityGroups relationship : this.PatientsToMorbitidyGroupsTb) {
+            if(relationship.getForeignKeyPatient().equals(id)) {
+                filtered.add(relationship);
+            }
+        }
+        return filtered;
+    }
+
+    public List<PatientsToMorbidityGroups> findRelByMorbdityId(Long id) {
+        List<PatientsToMorbidityGroups> filtered = new ArrayList<>();
+        for( PatientsToMorbidityGroups relationship : this.PatientsToMorbitidyGroupsTb) {
+            if(relationship.getForeignKeyMorbidityGr().equals(id)) {
+                filtered.add(relationship);
+            }
+        }
+        return filtered;
+    }
 
     public Patient findPatientById(Long id){
         for( Patient patient : this.PatientsTb) {
@@ -72,5 +107,14 @@ public class data {
         }
         return null;
     }
+
+    public List<Long> findMorbidityIdsByNames(List<String> morbidities){
+        List<Long> filteredIds = this.MorbidityGroupsTb.stream()
+                .filter(mb -> morbidities.contains(mb.getName()))
+                .map(x->x.getId()).collect(Collectors.toList());
+        return  filteredIds ;
+    }
+
+
 };
 

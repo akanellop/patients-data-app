@@ -17,15 +17,10 @@ public class Patient {
     }
 
     public void print(){
-        System.out.println(this.id);
-        System.out.println(this.name);
-        System.out.println(this.dateOfBirth);
-
+        System.out.println("Patient "+ this.getId().toString()+" : "+ this.getName() + " / "+this.getDateOfBirth().toString());
     }
 
-    public Long getId() {
-        return this.id;
-    }
+    public Long getId() { return this.id; }
 
     public String getName() {
         return this.name;
@@ -34,4 +29,9 @@ public class Patient {
     public Date getDateOfBirth() {
         return this.dateOfBirth;
     }
+
+    public static void decreaseTotalIds(){
+        totalIds -= 1;
+    }
+
 }
